@@ -1,0 +1,39 @@
+body {
+    background-color: black;
+}
+
+.btn-grid {
+  display: grid;
+  grid-template-columns: repeat(1, 40%);  
+}
+.hide {
+    display: none;
+  }
+  .controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .btn {
+    --hue: var(--hue-neutral);
+    border: 1px solid black;
+    background-color: #e3b1cc;
+    border-radius: 5px;
+    padding: 5px 10px;
+    color: red;
+    outline: none;
+    margin: 10px;
+  }
+  .start-btn, .next-btn {
+    font-size: 1.5rem;
+    font-weight: bold;
+    padding: 10px 20px;
+  }
+  .right {
+      color: green;
+      font-weight: 600;
+  }
+  .wrong {
+      color: red;
+      font-weight: 600;
+  }
