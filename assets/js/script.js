@@ -1,5 +1,5 @@
 const startBtn = $("#start-btn");
-const nextBtn = document.getElementById('next-btn')
+const nextBtn = document.getElementById('next-btn');
 const questionContainerEl = $("#question-container");
 const questionEl = $("#question");
 const answerBtnEl = document.getElementById('answer-buttons');
@@ -30,9 +30,9 @@ const questions = [
 
 
 startBtn.click(startGame);
-nextBtn.click(() => {
-    currentQuestionIndex++
-    setNextQuestion()
+nextBtn.addEventListener('click', () => {
+    currentQuestionIndex++;
+    setNextQuestion();
 })
 
 function startGame() {
@@ -46,6 +46,7 @@ function startGame() {
 }
 
 function setNextQuestion() {
+    resetState();
     console.log("setnextquestion is happening")
     showQuestion(shuffledQuestions[currentQuestionIndex]);
 }
@@ -67,8 +68,14 @@ function showQuestion(question) {
 }
 
 function resetState() {
-    nextBtn.classList.add('hide');
-}
+    function resetState() {
+        clearStatusClass(document.body)
+        nextBtn.classList.add('hide')
+        while (answerBtnEl.firstChild) {
+          answerBtnEl.removeChild(answerBtnEl.firstChild)
+        }
+      }
+    }
 function selectAnswer(e) {
     const selectedButton = e.target
     const correct = selectedButton.dataset.correct
