@@ -1,9 +1,10 @@
-const startBtn = $("#start-btn");
+const startBtn = document.getElementById('start-btn');
 const nextBtn = document.getElementById('next-btn');
 const questionContainerEl = $("#question-container");
 const questionEl = $("#question");
 const answerBtnEl = document.getElementById('answer-buttons');
 const resultEl = document.getElementById('result');
+var score = 0;
 
 let shuffledQuestions, currentQuestionIndex;
 
@@ -25,11 +26,47 @@ const questions = [
             { text: "append()", correct: false},
             { text: "concat()", correct: true}        
         ]
+    },
+    {
+        question: " Which of the following function of String object returns the characters in a string between two indexes into the string?",
+        answers: [
+            { text: "slice()", correct: false},
+            { text: "split()", correct: false},
+            { text: "substr()", correct: false},
+            { text: "substring()", correct: true}        
+        ]
+    },
+    {
+        question: " Which of the following function of String object returns the calling string value converted to upper case while respecting the current locale?",
+        answers: [
+            { text: "toLocaleUpperCase()", correct: true},
+            { text: "toUpperCase()", correct: false},
+            { text: "toString()", correct: false},
+            { text: "substring()", correct: false}        
+        ]
+    },
+    {
+        question: " Which of the following function of String object causes a string to be displayed in the specified size as if it were in a <font size = 'size'> tag?",
+        answers: [
+            { text: "fixed()", correct: false},
+            { text: "fontcolor()", correct: false},
+            { text: "fontsize()", correct: true},
+            { text: "bold()", correct: false}        
+        ]
+    },
+    {
+        question: " JavaScript is a _____-side programming language?",
+        answers: [
+            { text: "Server", correct: false},
+            { text: "Client", correct: false},
+            { text: "Both", correct: true},
+            { text: "None", correct: false}        
+        ]
     }
 ]
 
 
-startBtn.click(startGame);
+startBtn.addEventListener('click', startGame);
 nextBtn.addEventListener('click', () => {
     currentQuestionIndex++;
     setNextQuestion();
@@ -38,7 +75,7 @@ nextBtn.addEventListener('click', () => {
 function startGame() {
     console.log("the game has started")
     $("#welcome").hide();
-    startBtn.hide();
+    startBtn.classList.add('hide');
     shuffledQuestions = questions.sort(() => Math.random() - 0.5);
     currentQuestionIndex = 0;
     questionContainerEl.removeClass("hide");
@@ -47,13 +84,11 @@ function startGame() {
 
 function setNextQuestion() {
     resetState();
-    console.log("setnextquestion is happening")
     showQuestion(shuffledQuestions[currentQuestionIndex]);
 }
 
 function showQuestion(question) {
     questionEl.text(question.question);
-    //$("#question").text("this is a question");
     
     question.answers.forEach(answer => {
         const btnEl = document.createElement('button');
@@ -67,15 +102,15 @@ function showQuestion(question) {
       });
 }
 
-function resetState() {
+
     function resetState() {
-        clearStatusClass(document.body)
+       // clearStatusClass(document.body)
         nextBtn.classList.add('hide')
         while (answerBtnEl.firstChild) {
           answerBtnEl.removeChild(answerBtnEl.firstChild)
         }
       }
-    }
+    
 function selectAnswer(e) {
     const selectedButton = e.target
     const correct = selectedButton.dataset.correct
@@ -86,8 +121,12 @@ function selectAnswer(e) {
     if (shuffledQuestions.length > currentQuestionIndex + 1) {
       nextBtn.classList.remove('hide')
     } else {
-      startBtn.innerText = 'Restart'
+      startBtn.innerText = 'Quiz Over'
       startBtn.classList.remove('hide')
+      const scoreEl = document.createElement('p');
+      scoreEl.innerText = "Your final score is " + score;
+      console.log("final score= ", scoreEl.innerText);
+      answerBtnEl.appendChild(scoreEl);
     }
   }
 function setStatusClass(element, correct){
@@ -98,6 +137,8 @@ function setStatusClass(element, correct){
         resultEl.classList.add('right');
         resultEl.innerText = "Right!";
         console.log("Right! ");
+        score = score + 10;
+        console.log("the score is ", score);
     }
     else {
         resultEl.classList.add('wrong');
