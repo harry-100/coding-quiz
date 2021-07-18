@@ -1,10 +1,15 @@
-const startBtn = document.getElementById('start-btn');
-const nextBtn = document.getElementById('next-btn');
-const questionContainerEl = $("#question-container");
-const questionEl = $("#question");
-const answerBtnEl = document.getElementById('answer-buttons');
-const resultEl = document.getElementById('result');
+const startBtn = document.querySelector('#start-btn');
+const nextBtn = document.querySelector('#next-btn');
+const questionContainerEl = document.querySelector("#question-container");
+const questionEl = document.querySelector("#question");
+const answerBtnEl = document.querySelector('#answer-buttons');
+const resultEl = document.querySelector('#result');
+const timerEl = document.querySelector('#timer');
+const finalScoreEl = document.querySelector('#score');
+const nameEl = document.querySelector('#name');
+
 var score = 0;
+var timeCounter = 60;
 
 let shuffledQuestions, currentQuestionIndex;
 
@@ -65,20 +70,42 @@ const questions = [
     }
 ]
 
+function countDown() {
+    
+    timer = setInterval(() => {
+        timeCounter--;
+        $("#time-left").text(timeCounter)
+       
+if (timeCounter <= 0) {
+    clearInterval(timer);
+    startBtn.innerText = 'Quiz Over'
+      startBtn.classList.remove('hide')
+      nextBtn.classList.add('hide');
+      nameEl.classList.remove('hide');
+      questionContainerEl.classList.add('hide');
+      const scoreEl = document.createElement('p');
+      scoreEl.innerText = "Your final score is " + score;
+      console.log("final score= ", scoreEl.innerText);
+      answerBtnEl.appendChild(scoreEl);
+}
+    }, 1000) 
+}
 
-startBtn.addEventListener('click', startGame);
+startBtn.addEventListener('click', startQuiz);
 nextBtn.addEventListener('click', () => {
     currentQuestionIndex++;
     setNextQuestion();
 })
 
-function startGame() {
+function startQuiz() {
     console.log("the game has started")
+    countDown();
     $("#welcome").hide();
+
     startBtn.classList.add('hide');
     shuffledQuestions = questions.sort(() => Math.random() - 0.5);
     currentQuestionIndex = 0;
-    questionContainerEl.removeClass("hide");
+    questionContainerEl.classList.remove('hide');
     setNextQuestion();
 }
 
@@ -88,7 +115,7 @@ function setNextQuestion() {
 }
 
 function showQuestion(question) {
-    questionEl.text(question.question);
+    questionEl.innerText = question.question;
     
     question.answers.forEach(answer => {
         const btnEl = document.createElement('button');
@@ -118,16 +145,32 @@ function selectAnswer(e) {
     // Array.from(answerButtonsElement.children).forEach(button => {
     //   setStatusClass(button, button.dataset.correct)
     // })
-    if (shuffledQuestions.length > currentQuestionIndex + 1) {
-      nextBtn.classList.remove('hide')
-    } else {
-      startBtn.innerText = 'Quiz Over'
+    // if (shuffledQuestions.length > currentQuestionIndex + 1) {
+    //   nextBtn.classList.remove('hide') 
+    // } else {
+    //   startBtn.innerText = 'Quiz Over'
+    //   startBtn.classList.remove('hide')
+    //   const scoreEl = document.createElement('p');
+    //   scoreEl.innerText = "Your final score is " + score;
+    //   console.log("final score= ", scoreEl.innerText);
+    //   answerBtnEl.appendChild(scoreEl);
+    // }
+    if (shuffledQuestions.length <= currentQuestionIndex + 1){
+      startBtn.innerText = 'Restart'
+      clearInterval(timer);
+      questionContainerEl.classList.add('hide');
+      timerEl.classList.add('hide');  
       startBtn.classList.remove('hide')
-      const scoreEl = document.createElement('p');
-      scoreEl.innerText = "Your final score is " + score;
-      console.log("final score= ", scoreEl.innerText);
-      answerBtnEl.appendChild(scoreEl);
+      nameEl.classList.remove('hide');
+      //const scoreEl = document.createElement('p');
+      finalScoreEl.innerText = "Quiz Over! Your final score is " + score + "! \ Please enter your name.";
+      console.log("final score= ", finalScoreEl.innerText);
+      //answerBtnEl.appendChild(scoreEl);
     }
+    else {
+        nextBtn.classList.remove('hide');
+    }
+    
   }
 function setStatusClass(element, correct){
     //clearStatusClass(element);
@@ -142,6 +185,7 @@ function setStatusClass(element, correct){
     }
     else {
         resultEl.classList.add('wrong');
+        timeCounter = timeCounter - 10;
         resultEl.innerText = "Wrong!";
         console.log("Wrong Answer");
     }
