@@ -1,6 +1,5 @@
 const startBtn = document.querySelector('#start-btn');
 const nextBtn = document.querySelector('#next-btn');
-const highScoreBtn = document.querySelector('#high-score-btn')
 const questionContainerEl = document.querySelector("#question-container");
 const questionEl = document.querySelector("#question");
 const answerBtnEl = document.querySelector('#answer-buttons');
@@ -8,15 +7,9 @@ const resultEl = document.querySelector('#result');
 const timerEl = document.querySelector('#timer');
 const finalScoreEl = document.querySelector('#score');
 const nameEl = document.querySelector('#name');
-const submitEl = document.querySelector('#submit-btn')
-const displayScoreEl = document.querySelector('#display-score');
-const displayScoreListEl = document.querySelector('#display-result');
 
 var score = 0;
-var timeCounter = 45;
-var bestScores = [];
-var topScoreArray = [];
-var playerName;
+var timeCounter = 60;
 
 let shuffledQuestions, currentQuestionIndex;
 
@@ -77,28 +70,23 @@ const questions = [
     }
 ]
 
-function quizOver() {
-    startBtn.innerText = 'Restart';
-    nextBtn.classList.add('hide');
-    clearInterval(timer);
-    questionContainerEl.classList.add('hide');
-    timerEl.classList.add('hide');  
-    startBtn.classList.remove('hide')
-    nameEl.classList.remove('hide');
-    finalScoreEl.classList.remove('hide');
-    finalScoreEl.innerText = "Quiz Over! Your final score is " + score + "! \ Please enter your name.";
-    console.log("final score= ", finalScoreEl.innerText);
-
-  }
-
 function countDown() {
-    timeCounter = 45;
+    
     timer = setInterval(() => {
         timeCounter--;
         $("#time-left").text(timeCounter)
        
 if (timeCounter <= 0) {
-    quizOver();
+    clearInterval(timer);
+    startBtn.innerText = 'Quiz Over'
+      startBtn.classList.remove('hide')
+      nextBtn.classList.add('hide');
+      nameEl.classList.remove('hide');
+      questionContainerEl.classList.add('hide');
+      const scoreEl = document.createElement('p');
+      scoreEl.innerText = "Your final score is " + score;
+      console.log("final score= ", scoreEl.innerText);
+      answerBtnEl.appendChild(scoreEl);
 }
     }, 1000) 
 }
@@ -110,15 +98,12 @@ nextBtn.addEventListener('click', () => {
 })
 
 function startQuiz() {
-    console.log("the game has started");
-    score = 0;
-    timerEl.classList.remove('hide');  
+    console.log("the game has started")
     countDown();
     $("#welcome").hide();
-    nameEl.classList.add('hide');
-    displayScoreEl.classList.add('hide');
-    finalScoreEl.classList.add('hide');
+
     startBtn.classList.add('hide');
+    shuffledQuestions = questions.sort(() => Math.random() - 0.5);
     currentQuestionIndex = 0;
     questionContainerEl.classList.remove('hide');
     setNextQuestion();
@@ -126,7 +111,7 @@ function startQuiz() {
 
 function setNextQuestion() {
     resetState();
-    showQuestion(questions[currentQuestionIndex]);
+    showQuestion(shuffledQuestions[currentQuestionIndex]);
 }
 
 function showQuestion(question) {
@@ -146,7 +131,7 @@ function showQuestion(question) {
 
 
     function resetState() {
-  
+       // clearStatusClass(document.body)
         nextBtn.classList.add('hide')
         while (answerBtnEl.firstChild) {
           answerBtnEl.removeChild(answerBtnEl.firstChild)
@@ -157,10 +142,30 @@ function selectAnswer(e) {
     const selectedButton = e.target
     const correct = selectedButton.dataset.correct
     setStatusClass(document.body, correct)
-  
-    if (questions.length <= currentQuestionIndex + 1){
-        quizOver();
-
+    // Array.from(answerButtonsElement.children).forEach(button => {
+    //   setStatusClass(button, button.dataset.correct)
+    // })
+    // if (shuffledQuestions.length > currentQuestionIndex + 1) {
+    //   nextBtn.classList.remove('hide') 
+    // } else {
+    //   startBtn.innerText = 'Quiz Over'
+    //   startBtn.classList.remove('hide')
+    //   const scoreEl = document.createElement('p');
+    //   scoreEl.innerText = "Your final score is " + score;
+    //   console.log("final score= ", scoreEl.innerText);
+    //   answerBtnEl.appendChild(scoreEl);
+    // }
+    if (shuffledQuestions.length <= currentQuestionIndex + 1){
+      startBtn.innerText = 'Restart'
+      clearInterval(timer);
+      questionContainerEl.classList.add('hide');
+      timerEl.classList.add('hide');  
+      startBtn.classList.remove('hide')
+      nameEl.classList.remove('hide');
+      //const scoreEl = document.createElement('p');
+      finalScoreEl.innerText = "Quiz Over! Your final score is " + score + "! \ Please enter your name.";
+      console.log("final score= ", finalScoreEl.innerText);
+      //answerBtnEl.appendChild(scoreEl);
     }
     else {
         nextBtn.classList.remove('hide');
@@ -168,7 +173,7 @@ function selectAnswer(e) {
     
   }
 function setStatusClass(element, correct){
- 
+    //clearStatusClass(element);
     const resultEl = document.createElement('p');
     
     if (correct) {
@@ -186,37 +191,64 @@ function setStatusClass(element, correct){
     }
     answerBtnEl.appendChild(resultEl);
 }
-function showTopScores() {
-    playerName = document.getElementById('fname').value;
-    console.log("the player name is ", playerName);
-    if (playerName == "") {
-        playerName = "Anonymous";
-    };
-    
-    topScoreArray = JSON.parse(localStorage.getItem("topScoreArray")) || [];
-
-    topScoreArray.push({playerName, score});
-    topScoreArray.sort((a,b) => b.score - a.score);
-    localStorage.setItem('topScoreArray', JSON.stringify(topScoreArray));
-};    
 
 
-highScoreBtn.addEventListener('click', function(event){
-    event.preventDefault();
-    finalScoreEl.classList.add('hide');
-    displayScoreEl.classList.remove('hide');
-    nameEl.classList.add('hide');
 
-    // Top 3 scores to be printed
-    noOfScores = Math.min(topScoreArray.length, 3);
-    for (var i=0; i<noOfScores; i++){
-        
-        liItem = topScoreArray[i].playerName + " - " + topScoreArray[i].score;
-        liEl = document.createElement('li');
-        liEl.id = "scoreId";
-        liEl.innerText = liItem;
-        console.log("list item at the end= ", liItem);
-        displayScoreListEl.appendChild(liEl);
-    };
-    
+
+/*
+
+$("#start").click(function(){
+    $("#welcome").hide();
+    $()
+
+    console.log("Start button clicked");
 })
+
+var timeCounter = 60;
+$("#start").click(function(){
+    
+timer = setInterval(() => {
+        timeCounter--;
+        $("#time-left").text(timeCounter)
+       
+if (timeCounter <= 0) {
+    clearInterval(timer);
+}
+    }, 100)
+});
+
+questionText = "Which of the following is not a JavaScript data type?"
+answerOptions = ["Undefined", "Number", "Boolean", "Float"]
+correctAnswer = "Float"
+$("#start").click(function(){
+    $("#question").text(questionText);
+    for (i=0; i < answerOptions.length; i++){
+        //idNum = "options" + i + 1
+        // $("#options").append('<li><button id="option' + i.toString()+ '" type="button">' + answerOptions[i] + '</button></li>');
+        
+        console.log(optionNum);
+        $("#optionNum").text(answerOptions[i]);
+        $("#optionNum").text(answerOptions[1]);
+        $("#option0").text(answerOptions[i]);
+        
+    };
+})
+
+
+// $("#options").on('click', '#option3',function(){
+//     console.log("Correct Answer")
+// })
+
+$('#options').on('click', "#option0, #option1, #option2, #option3", function() {
+     if (this.id.text == "Float"){
+         console.log(this.id.text);
+         console.log("Correct");
+     }
+     else if (this.id == "option0" || "option1" || "option2"){
+         console.log("Wrong");
+         console.log(this.id.text());
+     }
+     
+ })
+
+ */

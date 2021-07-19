@@ -16,7 +16,7 @@
         <div class="bg-dark">
             <div class="row">
                 <div class="col">
-                    <button id="high-score" type="button" class="btn btn-info">View High Scores</button>
+                    <button id="high-score-btn" type="button" class="btn btn-info">View High Scores</button>
                 </div>
                 <div id = "timer" class="col">
                     <button type="button" class="btn btn-info">Timer: <span id="time-left">60</span>sec(s)</button>
@@ -32,7 +32,7 @@
             </div>
             <div class="row">
                 <div class="col text-center text-white mx-5">
-                    <p>This quiz has 10 questions and you will get 60 seconds to answer all the questions. The quiz ends when you have either answered all the questions or the time runs out. You get 10 points for every correct answer and you lose 10 seconds for every wrong answer. To start the quiz, please click the 'START QUIZ' button.</p>
+                    <p>This quiz has 6 questions and you will get 45 seconds to answer all the questions. The quiz ends when you have either answered all the questions or the time runs out. You get 10 points for every correct answer and you lose 10 seconds for every wrong answer. To start the quiz, please click the 'START QUIZ' button.</p>
                 </div>
             </div>
         
@@ -57,14 +57,19 @@
 
         <div id="score"></div>
         <form action="" id='name' class="hide">
-            <label for="fname">Please enter your name.</label>
-            <input id="fname" type="text" class='hide'>
+            <label for="fname"></label>
+            <input id="fname" type="text">
+            <input type="button" id='submit-btn' onclick="showTopScores()" value='Submit'>
         </form>
           <div class="pt-5 controls">
             <button id="start-btn" class="start-btn btn">Start Quiz</button>
             <button id="next-btn" class="next-btn btn hide">Next</button>
             
-          </div>     
+          </div>  
+        <div id='display-score' class='hide'>
+            <h3 class='score-heading'>Top 3 Scores</h3>
+            <ol id='display-result'></ol>
+        </div>     
       </div>
    
     <script src="./assets/js/script.js"></script>

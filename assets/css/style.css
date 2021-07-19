@@ -15,7 +15,6 @@ body {
     align-items: center;
   }
   .btn {
-    --hue: var(--hue-neutral);
     border: 1px solid black;
     background-color: #e3b1cc;
     border-radius: 5px;
@@ -47,4 +46,24 @@ body {
   #score {
       font-size: large;
       color: seagreen;
+  }
+  #submit-btn {
+    border: 1px solid black;
+    background-color: lightblue;
+    border-radius: 50px;
+    padding: 5px 10px;
+    color: blue;
+    outline: none;
+    margin: 10px;
+  }
+  #submit-btn:hover{
+      background-color: lightgreen;
+  }
+  .score-heading {
+      color: blue;
+      font-weight: 600;
+      margin-top: 20px;
+  }
+  #display-result {
+
   }
