@@ -1,3 +1,5 @@
+//declare variables
+
 const startBtn = document.querySelector('#start-btn');
 const nextBtn = document.querySelector('#next-btn');
 const highScoreBtn = document.querySelector('#high-score-btn')
@@ -19,6 +21,8 @@ var topScoreArray = [];
 var playerName;
 
 let shuffledQuestions, currentQuestionIndex;
+
+// Array containing question and answers 
 
 const questions = [
     {
@@ -77,6 +81,8 @@ const questions = [
     }
 ]
 
+// function for end of quiz
+
 function quizOver() {
     startBtn.innerText = 'Restart';
     nextBtn.classList.add('hide');
@@ -90,6 +96,8 @@ function quizOver() {
     console.log("final score= ", finalScoreEl.innerText);
 
   }
+
+// function for countdown timer
 
 function countDown() {
     timeCounter = 45;
@@ -108,6 +116,8 @@ nextBtn.addEventListener('click', () => {
     currentQuestionIndex++;
     setNextQuestion();
 })
+
+// function for starting the quiz
 
 function startQuiz() {
     console.log("the game has started");
@@ -152,7 +162,9 @@ function showQuestion(question) {
           answerBtnEl.removeChild(answerBtnEl.firstChild)
         }
       }
-    
+
+ //evaluating the correct answer     
+
 function selectAnswer(e) {
     const selectedButton = e.target
     const correct = selectedButton.dataset.correct
@@ -167,6 +179,9 @@ function selectAnswer(e) {
     }
     
   }
+
+  // actions based on correct and wrong answers
+
 function setStatusClass(element, correct){
  
     const resultEl = document.createElement('p');
@@ -186,6 +201,9 @@ function setStatusClass(element, correct){
     }
     answerBtnEl.appendChild(resultEl);
 }
+
+// Storing the scores  in local storage
+
 function showTopScores() {
     playerName = document.getElementById('fname').value;
     console.log("the player name is ", playerName);
@@ -200,6 +218,7 @@ function showTopScores() {
     localStorage.setItem('topScoreArray', JSON.stringify(topScoreArray));
 };    
 
+// displaying the top scores
 
 highScoreBtn.addEventListener('click', function(event){
     event.preventDefault();

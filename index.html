@@ -12,6 +12,7 @@
 
 </head>
 <body>
+    <!-- buttons for high scores and timer  -->
     <header>
         <div class="bg-dark">
             <div class="row">
@@ -19,11 +20,14 @@
                     <button id="high-score-btn" type="button" class="btn btn-info">View High Scores</button>
                 </div>
                 <div id = "timer" class="col">
-                    <button type="button" class="btn btn-info">Timer: <span id="time-left">60</span>sec(s)</button>
+                    <button type="button" class="btn btn-info">Timer: <span id="time-left">45</span>sec(s)</button>
                 </div>
             </div>
         </div>
     </header>
+    
+    <!-- Introduction and Start Quiz button -->
+
         <section id="welcome" class="bg-dark">
             <div class="row">
                 <div class="col">
@@ -36,24 +40,21 @@
                 </div>
             </div>
         
-            <!-- <div class="row text-center mt-5 pb-5">
-                <div class="col-12 ">
-                    <button id="start" type="button" class="btn btn-primary">START QUIZ</button>
-                </div>
-            </div> -->
+
         </section>
 
     <div class="card mx-auto container" style="width: 28rem;">
         
+        <!-- Question and Answers elements  -->
+
         <div id = "question-container" class="card-body p-5 hide">
           <div id="question">Question</div>
           <div id="answer-buttons" class="btn-grid">
-            <!-- <button class="btn">1</button>
-            <button class="btn">2</button>
-            <button class="btn">3</button>
-            <button class="btn">4</button> -->
+
           </div>
         </div>  
+
+        <!-- final score and name elements -->
 
         <div id="score"></div>
         <form action="" id='name' class="hide">
@@ -66,6 +67,9 @@
             <button id="next-btn" class="next-btn btn hide">Next</button>
             
           </div>  
+          
+          <!-- Display Top Scores  -->
+
         <div id='display-score' class='hide'>
             <h3 class='score-heading'>Top 3 Scores</h3>
             <ol id='display-result'></ol>
